@@ -230,7 +230,7 @@ int main(){
             cout << "Input shoot coordinates: ";
             cin >> x >> y;
             player1 = shoot(player1, x, y);
-            nextPlayerMove = nextMove(player2, x, y, nextPlayerMove);
+            nextPlayerMove = nextMove(player1, x, y, nextPlayerMove);
         }
     }
 
