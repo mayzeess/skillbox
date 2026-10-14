@@ -1,0 +1,1 @@
+Can it be said that a string is an array of chars? (yes/no)
