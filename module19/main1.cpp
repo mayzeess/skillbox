@@ -11,7 +11,7 @@ int main(){
     cin >> word;
 
     ifstream words;
-    words.open("D:\\skillbox\\module19\\words.txt");
+    words.open("words.txt");
 
     while(!words.eof()){
         string currentWord;

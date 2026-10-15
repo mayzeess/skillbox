@@ -7,7 +7,7 @@ int main(){
     ifstream sector;
     int numberSector[13];
 
-    sector.open("D:\\skillbox\\module19\\sectorNumber.txt");
+    sector.open("sectorNumber.txt");
     if (!sector.is_open()){ cout << "Error"; return 0; }
     for (int i = 0; i < 13; i++){ // записываем в массив из файла
         sector >> numberSector[i];
@@ -43,7 +43,7 @@ int main(){
         sprintf(numSec, "%d", currentSector); // переводим текущий сектор в число
 
         ifstream questionSector;
-        string sectorPathQuestion = "D:\\skillbox\\module19\\sectors\\question"; 
+        string sectorPathQuestion = "sectors\\question"; 
         string fileExtension = ".txt";
         sectorPathQuestion += numSec;
         sectorPathQuestion += fileExtension; // создаем путь к файлу - вопросу
@@ -69,7 +69,7 @@ int main(){
         getline(cin, answerUser);
 
         ifstream answerSector;
-        string sectorPathAnswer = "D:\\skillbox\\module19\\sectors\\answer";
+        string sectorPathAnswer = "sectors\\answer";
         sectorPathAnswer += numSec;
         sectorPathAnswer += fileExtension;
 
