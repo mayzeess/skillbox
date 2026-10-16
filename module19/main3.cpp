@@ -5,7 +5,7 @@ using namespace std;
 int main(){
     ifstream dataFile;
 
-    dataFile.open("D:\\skillbox\\module19\\dataFile.txt");
+    dataFile.open("dataFile.txt");
 
     string name, surname, date;
     double money, sum = 0, maxMoney = 0; // в данном примере можно было int, но деньги не всегда целое число. Решил использовать double
