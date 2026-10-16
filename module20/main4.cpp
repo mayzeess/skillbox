@@ -5,7 +5,7 @@
 #include <cstdlib>
 using namespace std;
 
-vector<int> addSaveData(vector<int> v){ // добавляем сохраненные данные из файла (если он есть)
+vector<int> addSaveData(vector<int>& v){ // добавляем сохраненные данные из файла (если он есть)
     ifstream bank("bank.bin", ios::binary);
     if (!bank.is_open()){
         bank.close();
@@ -19,7 +19,7 @@ vector<int> addSaveData(vector<int> v){ // добавляем сохраненн
     return v;
 }
 
-int sumBank(vector<int> v){ // считаем сумму всех денег в банке
+int sumBank(vector<int>& v){ // считаем сумму всех денег в банке
     int sum = 0;
     for (int i = 0; i < v.size(); i++){
         sum += v[i];
@@ -27,7 +27,7 @@ int sumBank(vector<int> v){ // считаем сумму всех денег в 
     return sum;
 }
 
-void printSateBank(vector<int> v){ // печатаем состояние банка
+void printSateBank(vector<int>& v){ // печатаем состояние банка
     ifstream bank("bank.bin", ios::binary);
     if (!bank.is_open()){
         cout << "The bank is empty." << endl;
@@ -65,9 +65,9 @@ int randomBanknote(int banknote){ // функция для определени�
     return 5000;
 }
 
-void saveData(vector<int> v); 
+void saveData(vector<int>& v); 
 
-vector<int> addBanknotes(vector<int> v){ // добавить недостающие банкноты
+vector<int> addBanknotes(vector<int>& v){ // добавить недостающие банкноты
     for (int i = 0; i < v.size(); i++){
         if (v[i] != 0) continue;
         int banknote = rand() % 6;
@@ -79,7 +79,7 @@ vector<int> addBanknotes(vector<int> v){ // добавить недостающ�
     return v;
 }
 
-vector<int> withdrawMoney(vector<int> v){ // функция снятия денег
+vector<int> withdrawMoney(vector<int>& v){ // функция снятия денег
     int countMoney;
     cout << "Input the amount of money: ";
     cin >> countMoney;
@@ -137,7 +137,7 @@ vector<int> withdrawMoney(vector<int> v){ // функция снятия ден�
     return v;
 }
 
-void saveData(vector<int> v){ // функция сохранения данных в файл
+void saveData(vector<int>& v){ // функция сохранения данных в файл
     ofstream file("bank.bin", ios::binary);
     for (int i = 0; i < v.size(); i++){
         file.write((char*)&v[i], sizeof(v[i]));
