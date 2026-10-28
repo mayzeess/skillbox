@@ -11,7 +11,6 @@ void endTask(bool &current_task, time_t t_start, pair<string, time_t>& oPair, ve
         tm locale = *localtime(&t_end);
         double res = difftime(t_end, t_start);
         time_t f = (t_start + (time_t)res) - t_start;
-        //time_t f = res; // можно и так
         oPair.second = f;
         cout << "End task " << oPair.first << endl << asctime(&locale);
         task.push_back(oPair);
@@ -52,9 +51,11 @@ int main(){
         }
         else if (command == "status"){
             for (int i = 0; i < task.size(); i++){
-                tm* local = localtime(&task[i].second);
-                local->tm_hour -= 4;
-                cout << "Task: " << task[i].first << " Time: " << put_time(local, "%H:%M:%S") << endl; // разница часовой формат, так как
+                time_t duration = task[i].second;
+                int hours = duration / 3600;
+                int minutes = (duration % 3600) / 60;
+                int seconds = duration % 60;
+                cout << "Task: " << task[i].first << "\nTime: " << hours << ":" << minutes << ":" << seconds << endl; // разница часовой формат, так как
             }
             if (current_task){
                 cout << "Current task: " << oPair.first << endl;
