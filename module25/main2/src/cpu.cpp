@@ -1,18 +1,15 @@
 #include <iostream>
 #include <vector>
 #include "cpu.h"
+#include "ram.h"
 using namespace std;
 
-void compute(vector<int> v){
-    if (v.size() < 8){
-        cout << "insufficient data" << endl;
-        return;
-    }
-    
+void compute(){
     int sum = 0;
-    for (int i = 0; i < v.size(); i++){
-        sum += v[i];
+    vector<int> buffer;
+    read(buffer);
+    for (int i = 0; i < buffer.size(); i++){
+        sum += buffer[i];
     }
-
     cout << "Sum: " << sum << endl;
 }

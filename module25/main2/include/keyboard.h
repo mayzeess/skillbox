@@ -2,4 +2,4 @@
 #include <vector>
 using namespace std;
 
-void inputBuffer(vector<int>& v);
+void inputBuffer();

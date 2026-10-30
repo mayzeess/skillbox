@@ -2,9 +2,7 @@
 #include <vector>
 #include "cpu.h"
 #include "keyboard.h"
-#include "ram.h" // только команды из данной функции не использутся. 
-// по заданию они как бы совпадают с командами в файле cpu и keyboard. 
-// может я что-то не так понял. Сами функции реализованы но не используются.
+#include "ram.h"
 #include "disk.h"
 #include "gpu.h"
 using namespace std;
@@ -18,26 +16,24 @@ void printListCommand(){
 int main(){
     string command;
     printListCommand();
-    vector<int> bufer;
+    cout << endl;
     while (true){
         cout << "Input command: ";
         cin >> command;
         if (command == "sum"){
-            compute(bufer);
+            compute();
         }
         else if (command == "save"){
-            if (!bufer.empty()){
-                save(bufer);
-            }
+            save();
         }
         else if (command == "load"){
-            load(bufer);
+            load();
         }
         else if (command == "input"){
-            inputBuffer(bufer);
+            inputBuffer();
         }
         else if (command == "display"){
-            read(bufer);
+            printBuffer();
         }
         else if (command == "exit"){
             cout << "Exi program" << endl;

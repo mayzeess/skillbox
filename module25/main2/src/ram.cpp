@@ -3,26 +3,16 @@
 #include "ram.h"
 using namespace std;
 
+vector<int> buffer(8);
+
 void write(vector<int>& v){
-    v.clear();
-    int x;
-    for (int i = 0; i < 8; i++){
-        cout << "Input " << i + 1 << " element: ";
-        cin >> x;
-        v.push_back(x);
+    for (int i = 0; i < buffer.size(); i++){
+        buffer[i] = v[i];
     }
-    cout << "Bufer saved" << endl;
 }
 
 void read(vector<int>& v){
-    if (v.size() < 8){
-        cout << "insufficient data" << endl;
-        return;
+    for (int i = 0; i < buffer.size(); i++){
+        v[i] = buffer[i];
     }
-    
-    cout << "Buffer: ";
-    for (int i = 0; i < v.size(); i++){
-        cout << v[i] << " ";
-    }
-    cout << endl;
 }
