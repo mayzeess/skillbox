@@ -5,73 +5,75 @@
 using namespace std;
 
 class ConatactPhone{
-    public:
-        map<string, string> addressBook;
+    map<string, string> addressBook;
+
+    public: 
+        void add(string number, string name){
+            addressBook.insert({number, name});
+            cout << "Contact add" << endl;
+        }
+
+        string searchContact(string contact){ // функция поиска контакта по номеру или имени и вывода его
+            if (contact.length() > 2 && contact.substr(0, 2) == "+7"){ // проверил первые 2 символа, если начинаются на +7, значит пользователь ввел номер телефона
+                if (addressBook.find(contact) != addressBook.end()){
+                    cout << addressBook.find(contact)->first << " " << addressBook.find(contact)->second << endl;
+                    return addressBook.find(contact)->first;
+                }
+                return contact;
+            }
+            else {
+                for (map<string, string>::iterator it = addressBook.begin(); it != addressBook.end(); it++){
+                    if (it->second == contact){
+                        cout << it->first << " " << it->second << endl;
+                        return it->first;
+                    }
+                }
+            }
+            return ""; // пустая строка, если введено имя, которого нету в контактах
+        }
 };
 
 class Phone{
-    ConatactPhone* contact = new ConatactPhone;
+    ConatactPhone* contactPhone = new ConatactPhone;
 
-    void printCallOrSMS(bool call){
-        if (call){
+    void callPhone(string contact){
+        if (contactPhone->searchContact(contact) != ""){
             cout << "CALL..." << endl;
         }
-        else {
-            cout << "Input sms\n";
-            string sms;
-            cin.ignore();
-            getline(cin, sms);
-            cout << "Message sent." << endl;
+        else{
+            cout << "contact not found" << endl;
         }
     }
 
+    void smsPhone(string contact){
+        if (contactPhone->searchContact(contact) != ""){
+            cout << " SMS sent" << endl;
+        }
+        else{
+            cout << "contact not found" << endl;
+        }                
+    }
+
+    void addContact(string number, string name){
+        contactPhone->add(number, name);
+    }
+
     public:
-        void add(){
-            cout << "Input number: +7";
-            string number;
-            cin >> number;
-            number = "+7" + number;
-            cout << "Input name: ";
-            string name;
-            cin >> name;
-            contact->addressBook.insert({number, name});
+        void call(string contact){
+            callPhone(contact);
         }
 
-        void printContact(){
-            map<string, string> oMap =  contact->addressBook;
-            for(map<string, string>::iterator it = oMap.begin(); it != oMap.end(); it++){
-                cout << it->first << " " << it->second << endl;
-            }
+        void add(string number, string name){
+            addContact(number, name);
         }
 
-        void callAndSMS(bool call){ // если true - это звонок, false - sms
-            cout << "Input name/number contact: ";
-            string inputContact;
-            cin >> inputContact;
-            if (inputContact.length() > 2 && inputContact.substr(0, 2) == "+7"){ // проверил первые 2 символа, если начинаются на +7, значит пользователь ввел номер телефона
-                if (contact->addressBook.find(inputContact) != contact->addressBook.end()){
-                    cout << contact->addressBook.find(inputContact)->first << " " << contact->addressBook.find(inputContact)->second << endl;
-                    printCallOrSMS(call);
-                    return;
-                }
-                cout << "contact not found" << endl;
-            }
-            else {
-                map<string, string> oMap = contact->addressBook;
-                for (map<string, string>::iterator it = oMap.begin(); it != oMap.end(); it++){
-                    if (it->second == inputContact){
-                        cout << it->first << " " << it->second << endl;
-                        printCallOrSMS(call);
-                        return;
-                    }
-                }
-                cout << "contact not found" << endl; // елси не нашли контакт, то выводим сообщение, что контакт не найден
-            }
+        void sms(string contact, string sms){ // с сообщением ничего не делается, так как это симуляция. Но я передаю его в класс телефона
+            smsPhone(contact);
         }
 
-        void deleteContact(){
-            delete contact;
-            contact = nullptr;
+        void deleteConatactPhone(){
+            delete contactPhone;
+            contactPhone = nullptr;
         }
 };
 
@@ -90,17 +92,32 @@ int main(){
         cout << "Input command: ";
         cin >> command;
         if (command == "add"){
-            phone->add();
+            cout << "Input number: +7";
+            string number, name;
+            cin >> number;
+            number = "+7" + number;
+            cout << "Input name: ";
+            cin >> name;
+            phone->add(number, name);
         }
         else if (command == "call"){
-            phone->callAndSMS(true);
+            cout << "Input name/number contact: ";
+            string inputContact;
+            cin >> inputContact;
+            phone->call(inputContact);
         }
         else if (command == "sms"){
-            phone->callAndSMS(false);
+            string inputContact, sms;
+            cout << "Input contact: ";
+            cin >> inputContact;
+            cout << "Input sms: ";
+            cin.ignore();
+            getline(cin, sms);
+            phone->sms(inputContact, sms);
         }
         else if (command == "exit"){
             cout << "Exit program" << endl;
-            phone->deleteContact();
+            phone->deleteConatactPhone();
             delete phone;
             phone = nullptr;
             return 0;
@@ -110,7 +127,6 @@ int main(){
             printCommand();
         }
     }
-    
     
     return 0;
 }

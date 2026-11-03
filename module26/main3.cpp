@@ -2,21 +2,10 @@
 #include <vector>
 using namespace std;
 
-class MonitorScreen{
-    vector<vector<bool>> screen{50, vector<bool>(80, 0)}; // вектор типа данных bool, так как у нас все равно 0 или 1
-    int x = 0, y = 0, height = 10, width = 10; // координаты начала окна и его размер. Изначально окно будет в координатаъ (0, 0) и размером 10 на 10
-    void printScreen(vector<vector<bool>>& v){
-        updateWindow(x, y, height, width, v);
-        for (int i = 0; i < v.size(); i++){
-            for(int j = 0; j < v[i].size(); j++){
-                cout << v[i][j];
-            }
-            cout << endl;
-        }
-        cout << endl;
-    }
+class Window{
+    int x, y, height, width; // координаты начала окна и его размер
 
-    void updateWindow(int x, int y, int height, int width, vector<vector<bool>>& v){
+    void positionWindow(int x, int y, int height, int width, vector<vector<bool>>& v){ // функция которая задает позицию окна, располагает его в нужном месте
         for (int i = 0; i < v.size(); i++){
             for (int j = 0; j < v[i].size(); j++){
                 v[i][j] = (i >= x && j >= y && i < x + height && j < y + width);
@@ -24,36 +13,88 @@ class MonitorScreen{
         }
     }
 
-    void moveScreen(int moveX, int moveY, int& x, int& y, int height, int width){
+    void moveWindow(int moveX, int moveY, int& x, int& y, int height, int width, int px, int py){
         x += moveX;
         y += moveY;
         if (x < 0) x = 0;
         if (y < 0) y = 0;
-        if (x > 50 - height) x = 50 - height;
-        if (y > 80 - width) y = 80 - width;
+        if (x > px - height) x = px - height;
+        if (y > py - width) y = py - width;
 
         cout << "New coordinate: " << x << ", " << y << ". Width: " << width << " Height: " << height << endl;
     }
 
-    void resizeScreen(int newWidth, int newHeight){
+    void resizeWindow(int newWidth, int newHeight, int px, int py){
         height = newHeight;
         width = newWidth;
-        if (width > 80 - y) width = 80 - y;
-        if (height > 50 - x) height = 50 - x;
+        if (width > py - y) width = py - y;
+        if (height > px - x) height = px - x;
+        if (width < 0) width = 1;
+        if (height < 0) height = 1;
         cout << "New size: " << "Width: " << width << " Height: " << height << endl;
     }
 
     public:
+        Window(int startX, int startY, int startH, int startW){
+            x = startX;
+            y = startY;
+            height = startH;
+            width = startW;
+        }
+
+        void move(int moveX, int moveY, int px, int py){
+            moveWindow(moveX, moveY, x, y, height, width, px, py);
+        }
+
+        void updatePositionWindow(vector<vector<bool>>& v){
+            positionWindow(x, y, height, width, v);
+        }
+
+        void resize(int newWidth, int newHeight, int px, int py){
+            resizeWindow(newWidth, newHeight, px, py);
+        }
+
+
+};
+
+class MonitorScreen{
+    int px, py; // размер экрана монитора
+    vector<vector<bool>> screen; // вектор типа данных bool, так как у нас все равно 0 или 1
+    Window* window = new Window(0, 0, 10, 10);
+
+    void printScreen(){
+        window->updatePositionWindow(screen);
+        for (int i = 0; i < screen.size(); i++){
+            for(int j = 0; j < screen[i].size(); j++){
+                cout << screen[i][j];
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
+
+    public:
+        MonitorScreen(int x, int y){
+            px = x;
+            py = y;
+            screen.resize(x, vector<bool>(y, 0));
+        }
+
         void display(){
-            printScreen(screen);
+            printScreen();
         }
 
         void move(int moveX, int moveY){
-            moveScreen(moveX, moveY, x, y, height, width);
+            window->move(moveX, moveY, px, py);
         }
 
         void resize(int newWidth, int newHeight){
-            resizeScreen(newWidth, newHeight);
+            window->resize(newWidth, newHeight, px, py);
+        }
+
+        void deleteWindow(){
+            delete window;
+            window = nullptr;
         }
 };
 
@@ -65,7 +106,7 @@ void printCommand(){
 }
 
 int main(){
-    MonitorScreen* monitorScreen = new MonitorScreen;
+    MonitorScreen* monitorScreen = new MonitorScreen(50, 80);
     printCommand();
     string command;
     while(true){
@@ -88,6 +129,7 @@ int main(){
         }
         else if (command == "close"){
             cout << "Exit program" << endl;
+            monitorScreen->deleteWindow();
             delete monitorScreen;
             monitorScreen = nullptr;
             return 0;
