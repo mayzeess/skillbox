@@ -53,8 +53,6 @@ class Window{
         void resize(int newWidth, int newHeight, int px, int py){
             resizeWindow(newWidth, newHeight, px, py);
         }
-
-
 };
 
 class MonitorScreen{
@@ -77,7 +75,7 @@ class MonitorScreen{
         MonitorScreen(int x, int y){
             px = x;
             py = y;
-            screen.resize(x, vector<bool>(y, 0));
+            screen.resize(px, vector<bool>(py, 0));
         }
 
         void display(){
