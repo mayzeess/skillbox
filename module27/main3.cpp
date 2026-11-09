@@ -15,7 +15,7 @@ public:
             if (treeDepth > 1) {
                 if (treeDepth == 3) inName = "Big " + to_string(i);
                 else if (treeDepth == 2)inName = "Middle " + to_string(i);
-                children.push_back(new Branch(treeDepth - 1, rand() % 8 + 3, inName));
+                children.push_back(new Branch(treeDepth - 1, rand() % 1 + 2, inName));
                 children[i]->parent = this;
             }
         }
@@ -65,10 +65,8 @@ public:
             for (int i = 0; i < top->children.size(); i++){
                 if (top->children[i]->elfName != "") count++;
             }
-            delete top;
             return count;
         }
-        delete top;
         return 0;
     }
 };
@@ -76,8 +74,8 @@ public:
 int main(){
     int countElf = 0; // счетчик эльфов, чтобы задать им неповторяющиеся имена
     vector<Branch*> elfVillage; // вектор деревьев эльфов. Вся дервня
-    for (int i = 0; i < 2; i++){
-        elfVillage.push_back(new Branch(3, rand() % 8 + 3, "Tree " + to_string(i + 1)));
+    for (int i = 0; i < 5; i++){
+        elfVillage.push_back(new Branch(3, rand() % 2 + 3, "Tree " + to_string(i + 1)));
         elfVillage[i]->populateElf(elfVillage[i], countElf); // заселяем всех эльфов
         elfVillage[i]->printTree();
     }
