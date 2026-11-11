@@ -10,7 +10,7 @@ class Branch{
     string elfName = "";
 
 public:
-    Branch(int treeDepth, int countChildren, string inName) : name(inName){ // передаем глубину дерева и кол-во детеей на каждой ветке
+    Branch(int treeDepth, int countChildren, string inName) : name(inName){ // передаем глубину дерева и кол-во детей на каждой ветке
         for (int i = 0; i < countChildren; i++){
             if (treeDepth > 1) {
                 if (treeDepth == 3) inName = "Big " + to_string(i);
@@ -38,6 +38,7 @@ public:
             children[i]->printTree(depth + 1);
         }
     }
+
 
     Branch* getTopBranch()
     {

@@ -47,25 +47,24 @@ class Team{
     int numberTeam = 0;
     int countWorker = 0;
 public:
-    vector<Worker*> workers;
+    vector<Worker> workers;
     Team(string inName, int inNumberTeam, int inCountWorker, int inAllWorkers) : name(inName), numberTeam(inNumberTeam), countWorker(inCountWorker){
-        workers.resize(countWorker);
         for (int i = 0; i < countWorker; i++){
-            workers[i] = new Worker("Worker " + to_string(inAllWorkers + i + 1));
+            workers.emplace_back("Worker " + to_string(inAllWorkers + i + 1));
         }
     }
 
     void getTeam(){
         cout << name << endl;
         for (int i = 0; i < countWorker; i++){
-            workers[i]->getName();
+            workers[i].getName();
         }
     }
 
     void createTaskTeam(int inTaskCount){
         for (int i = 0; i < countWorker; i++){
-            if (!workers[i]->workersFree() && inTaskCount > 0){ // если работник свободен и еще есть задачи
-                workers[i]->createTaskWorkers();
+            if (!workers[i].workersFree() && inTaskCount > 0){ // если работник свободен и еще есть задачи
+                workers[i].createTaskWorkers();
                 inTaskCount--;
             }
             else{
@@ -77,17 +76,10 @@ public:
     int getFreeWorkersTeam(){ // получаем количество рабочих, которые уже свободны
         int count = 0;
         for (int i = 0; i < countWorker; i++){
-            if (!workers[i]->workersFree()) count++;
+            if (!workers[i].workersFree()) count++;
         }
         return count;
     }
-
-    void deleteWorkers(){
-        for (int i = 0; i < workers.size(); i++){
-            delete workers[i];
-        }
-    }
-
 };
 
 class Manager{
@@ -119,8 +111,7 @@ public:
         team->createTaskTeam(taskCount);
     }
 
-    void deleteTeam(){
-        team->deleteWorkers();
+    ~Manager(){
         delete team;
     }
 };
@@ -139,7 +130,7 @@ public:
     }
 
     HeadCompany(int inCountTeam = 0) : countTeam(inCountTeam){
-        managers = new Manager*[countTeam];
+        managers = new Manager*[countTeam]{};
     }
 
     void createManager(int inNumberTeam, int inCountWorkers){
@@ -153,13 +144,16 @@ public:
         }
     }
 
+    ~HeadCompany() {
+        for (int i = 0; i < countTeam; i++){ // очищаем память если больше нету рабочих
+            delete managers[i];
+        }
+        delete[] managers;
+    }
+    
     bool employment(){ // функция для определения, есть ли свободные рабочие в компании
         for (int i = 0; i < countTeam; i++){
             if (managers[i]->team->getFreeWorkersTeam() > 0) return true;
-        }
-        for (int i = 0; i < countTeam; i++){ // очищаем память если больше нету рабочих
-            managers[i]->deleteTeam();
-            delete managers[i];
         }
         return false;
     }
