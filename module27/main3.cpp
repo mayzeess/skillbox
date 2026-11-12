@@ -70,6 +70,12 @@ public:
         }
         return 0;
     }
+
+    ~Branch(){
+        for (int i = 0; i < children.size(); i++){
+            delete children[i];
+        }
+    }
 };
 
 int main(){
