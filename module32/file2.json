@@ -1,0 +1,62 @@
+{
+    "Dirty Money": {
+        "actor 1": "Henry Cavill",
+        "actor 2": "Eiza González",
+        "actor 3": "Rosamund Pike",
+        "country": "UK, USA",
+        "date": "May 21, 2026",
+        "director": "Guy Ritchie",
+        "leading role": "Jake Gyllenhaal",
+        "producer": "John Friedberg",
+        "scenario": "Guy Ritchie",
+        "studio": "Black Bear"
+    },
+    "Odyssey": {
+        "actor 1": "Tom Holland",
+        "actor 2": "Anne Hathaway",
+        "actor 3": "Robert Pattinson",
+        "country": "USA",
+        "date": "July 6, 2026",
+        "director": "Christopher Nolan",
+        "leading role": "Matt Damon",
+        "producer": "Christopher Nolan",
+        "scenario": "Christopher Nolan",
+        "studio": "Universal Pictures"
+    },
+    "Resident Evil": {
+        "actor 1": "Zach Cherry",
+        "actor 2": "Kali Reis",
+        "actor 3": "Paul Walter Hauser",
+        "country": "USA, Germany, France",
+        "date": "September 16, 2026",
+        "director": "Zach Cregger",
+        "leading role": "Austin Abrams",
+        "producer": "Zach Cregger",
+        "scenario": "Zach Cregger",
+        "studio": "Columbia Pictures"
+    },
+    "Spider-Man: Brand New Day": {
+        "actor 1": "Zendaya",
+        "actor 2": "Sadie Sink",
+        "actor 3": "Jacob Batalon",
+        "country": "USA, Canada, UK, Germany",
+        "date": "July 27, 2026",
+        "director": "Chris McKenna",
+        "leading role": "Tom Holland",
+        "producer": "Kevin Feige",
+        "scenario": "Destin Daniel Cretton",
+        "studio": "Columbia Pictures"
+    },
+    "The Hateful Eight": {
+        "actor 1": "Samuel L. Jackson",
+        "actor 2": "Jennifer Jason Leigh",
+        "actor 3": "Walton Goggins",
+        "country": "USA",
+        "date": "December 7, 2015",
+        "director": "Quentin Tarantino",
+        "leading role": "Kurt Russell",
+        "producer": "Richard N. Gladstein",
+        "scenario": "Quentin Tarantino",
+        "studio": "The Weinstein Company LLC"
+    }
+}
