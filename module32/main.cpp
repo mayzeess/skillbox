@@ -5,6 +5,11 @@
 #include <vector>
 using namespace std;
 
+struct actor{ // структура актеров
+    string actor;
+    string role;
+};
+
 struct film{
     string name;
     string country;
@@ -13,44 +18,63 @@ struct film{
     string scenario;
     string director;
     string producer;
-    string leadingRole;
-    string actor1;
-    string actor2;
-    string actor3;
+    vector<actor> actors;
 };
 
 // задание 1
 void task1(){
+    film odyssey;
+    odyssey.name = "Odyssey";
+    odyssey.country = "USA";
+    odyssey.date = "July 6, 2026";
+    odyssey.studio = "Universal Pictures";
+    odyssey.scenario = "Christopher Nolan";
+    odyssey.director = "Christopher Nolan";
+    odyssey.producer = "Christopher Nolan";
+    odyssey.actors.push_back({"Matt Damon", "Leading role"});
+    odyssey.actors.push_back({"Tom Holland", "Actor 1"});
+    odyssey.actors.push_back({"Anne Hathaway", "Actor 2"});
+    odyssey.actors.push_back({"Robert Pattinson", "Actor 3"});
+
     ofstream file("file.json");
-    nlohmann::json dict = {
-        {"name", "Odyssey"},
-        {"country", "USA"},
-        {"date", "July 6, 2026"},
-        {"studio", "Universal Pictures"},
-        {"scenario", "Christopher Nolan"},
-        {"director", "Christopher Nolan"},
-        {"producer", "Christopher Nolan"},
-        {"leading role", "Matt Damon"},
-        {"actor 1", "Tom Holland"},
-        {"actor 2", "Anne Hathaway"},
-        {"actor 3", "Robert Pattinson"}
-    };
+    nlohmann::json dict;
+    dict[odyssey.name]["country"] = odyssey.country;
+    dict[odyssey.name]["date"] = odyssey.date;
+    dict[odyssey.name]["studio"] = odyssey.studio;
+    dict[odyssey.name]["scenario"] = odyssey.scenario;
+    dict[odyssey.name]["director"] = odyssey.director;
+    dict[odyssey.name]["producer"] = odyssey.producer;
+    dict[odyssey.name]["actors"] = nlohmann::json::array();
+    for (int i = 0; i < odyssey.actors.size(); i++){
+        dict[odyssey.name]["actors"][i]["actor"] = odyssey.actors[i].actor;
+        dict[odyssey.name]["actors"][i]["role"] = odyssey.actors[i].role;
+    }
     file << dict.dump(4); // отступ в 4 пробела для карсивой записи
     file.close();
 }
 
 // задание 2
-void searchActor(string nameActor, vector<film>& films){ // функция для поиска фильмов по актеру
+void searchActor(string nameActor){ // функция для поиска фильмов по актеру
     ifstream file("file2.json");
     nlohmann::json dict;
     file >> dict;
     bool found = false;
-    for (int i = 0; i < films.size(); i++){
-        if (nameActor == films[i].leadingRole || nameActor == films[i].actor1 || nameActor == films[i].actor2 || nameActor == films[i].actor3){
-            found = true;
-            cout << "Film: " << films[i].name << endl;
-            cout << "Role: ";
-            cout << (nameActor == films[i].leadingRole ? "Leading role" : (nameActor == films[i].actor1 ? "Actor 1" : (nameActor == films[i].actor2 ? "Actor 2" : "Actor 3"))) << endl << endl;
+    // for (int i = 0; i < films.size(); i++){
+    //     for (int j = 0; j < films[i].actors.size(); j++){
+    //         if (films[i].actors[j].actor == nameActor){
+    //             cout << "\nFilm: " << films[i].name << endl;
+    //             cout << "Role: " << films[i].actors[j].role << endl;
+    //             found = true;
+    //         }
+    //     }
+    // }
+    for (auto& [filmName, filmInfo] : dict.items()){ // объект json для поиска
+        for (auto& actorInfo : filmInfo["actors"]){
+            if (actorInfo["actor"] == nameActor){
+                cout << "\nFilm: " << filmName << endl;
+                cout << "Role: " << actorInfo["role"] << endl;
+                found = true;
+            }
         }
     }
     if (!found){
@@ -70,11 +94,13 @@ void task2(){
         "Universal Pictures", 
         "Christopher Nolan", 
         "Christopher Nolan", 
-        "Christopher Nolan", 
-        "Matt Damon", 
-        "Tom Holland", 
-        "Anne Hathaway", 
-        "Robert Pattinson" 
+        "Christopher Nolan",
+        {
+            {"Matt Damon", "Leading role"}, 
+            {"Tom Holland", "Actor 1"}, 
+            {"Anne Hathaway", "Actor 2"}, 
+            {"Robert Pattinson", "Actor 3"}
+        }
     };
     films.push_back(film1);
     film film2 = {
@@ -85,10 +111,12 @@ void task2(){
         "Quentin Tarantino", 
         "Quentin Tarantino",
         "Richard N. Gladstein",
-        "Kurt Russell", 
-        "Samuel L. Jackson", 
-        "Jennifer Jason Leigh", 
-        "Walton Goggins" 
+        {
+            {"Kurt Russell", "Leading role"},
+            {"Samuel L. Jackson", "Actor 1"},
+            {"Jennifer Jason Leigh", "Actor 2"},
+            {"Walton Goggins", "Actor 3"}
+        }
     };
     films.push_back(film2);
     film film3 = {
@@ -98,11 +126,13 @@ void task2(){
         "Columbia Pictures", 
         "Zach Cregger", 
         "Zach Cregger", 
-        "Zach Cregger", 
-        "Austin Abrams", 
-        "Zach Cherry", 
-        "Kali Reis", 
-        "Paul Walter Hauser"
+        "Zach Cregger",
+        {
+            {"Austin Abrams", "Leading role"}, 
+            {"Zach Cherry", "Actor 1"}, 
+            {"Kali Reis", "Actor 2"}, 
+            {"Paul Walter Hauser", "Actor 3"}
+        }
     };
     films.push_back(film3);
     film film4 = {
@@ -112,11 +142,13 @@ void task2(){
         "Columbia Pictures", 
         "Destin Daniel Cretton", 
         "Chris McKenna", 
-        "Kevin Feige", 
-        "Tom Holland", 
-        "Zendaya", 
-        "Sadie Sink", 
-        "Jacob Batalon" 
+        "Kevin Feige",
+        {
+            {"Tom Holland", "Spider-Man"}, 
+            {"Zendaya", "MJ"}, 
+            {"Sadie Sink", "Actor 2"}, 
+            {"Jacob Batalon", "Actor 3"}
+        }
     };
     films.push_back(film4);
     film film5 = {
@@ -126,11 +158,13 @@ void task2(){
         "Black Bear",
         "Guy Ritchie", 
         "Guy Ritchie", 
-        "John Friedberg", 
-        "Jake Gyllenhaal", 
-        "Henry Cavill", 
-        "Eiza González", 
-        "Rosamund Pike" 
+        "John Friedberg",
+        {
+            {"Jake Gyllenhaal", "Leading role"}, 
+            {"Henry Cavill", "Actor 1"}, 
+            {"Eiza González", "Actor 2"}, 
+            {"Rosamund Pike", "Actor 3"}
+        }
     };
     films.push_back(film5);
 
@@ -143,11 +177,13 @@ void task2(){
         infoFilms["scenario"] = films[i].scenario;
         infoFilms["director"] = films[i].director;
         infoFilms["producer"] = films[i].producer;
-        infoFilms["leading role"] = films[i].leadingRole;
-        infoFilms["actor 1"] = films[i].actor1;
-        infoFilms["actor 2"] = films[i].actor2;
-        infoFilms["actor 3"] = films[i].actor3;
         dict[films[i].name] = infoFilms;
+        dict[films[i].name]["actors"] = nlohmann::json::array();
+        for (int j = 0; j < films[i].actors.size(); j++){
+            dict[films[i].name]["actors"][j]["actor"] = films[i].actors[j].actor;
+            dict[films[i].name]["actors"][j]["role"] = films[i].actors[j].role;
+        }
+        
     }
 
     ofstream file("file2.json");
@@ -156,11 +192,11 @@ void task2(){
 
     cout << " 0 - exit program" << endl;
     while(true){
-        cout << "Enter the actor's name: ";
+        cout << "\nEnter the actor's name: ";
         string nameActor;
         getline(cin, nameActor);
         if (nameActor == "0") break;
-        searchActor(nameActor, films);
+        searchActor(nameActor);
     }
 }
 
